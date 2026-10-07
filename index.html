@@ -2,702 +2,176 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-</head>
-<body>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>LS PMS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root{
- --ground:#F7F5F4; --surface:#FFF; --surface-2:#FBF9F8; --raised:#FFF;
+ --ground:#F7F5F4; --surface:#FFF; --surface-2:#FBF9F8;
  --ink:#1A1614; --ink-2:#554C47; --ink-3:#847A74;
  --rule:#E4DFDC; --rule-2:#EFEBE9;
  --accent:#8B0000; --accent-soft:#F8ECEC; --accent-line:#D9B9B9;
- --ok:#2D6A4F; --ok-soft:#E6F0EB; --warn:#8A5A14; --warn-soft:#F8F0E0; --idle:#7D736E; --idle-soft:#F0EDEB;
  --shadow:0 1px 2px rgba(26,22,20,.05),0 10px 28px -20px rgba(26,22,20,.3);
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
- --ground:#141211; --surface:#1C1918; --surface-2:#232020; --raised:#262221;
+ --ground:#141211; --surface:#1C1918; --surface-2:#232020;
  --ink:#EDE9E6; --ink-2:#B5ACA7; --ink-3:#857B76;
  --rule:#332E2B; --rule-2:#282423;
  --accent:#E0938A; --accent-soft:#2B1A18; --accent-line:#4A3330;
- --ok:#6FBF9A; --ok-soft:#16281F; --warn:#D9A85C; --warn-soft:#2A2418; --idle:#8A807A; --idle-soft:#242120;
  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -20px rgba(0,0,0,.8);
 }}
 :root[data-theme="dark"]{
- --ground:#141211; --surface:#1C1918; --surface-2:#232020; --raised:#262221;
+ --ground:#141211; --surface:#1C1918; --surface-2:#232020;
  --ink:#EDE9E6; --ink-2:#B5ACA7; --ink-3:#857B76;
  --rule:#332E2B; --rule-2:#282423;
  --accent:#E0938A; --accent-soft:#2B1A18; --accent-line:#4A3330;
- --ok:#6FBF9A; --ok-soft:#16281F; --warn:#D9A85C; --warn-soft:#2A2418; --idle:#8A807A; --idle-soft:#242120;
  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -20px rgba(0,0,0,.8);
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--ground);color:var(--ink);
- font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;line-height:1.55;
- -webkit-font-smoothing:antialiased}
-h1,h2,h3{margin:0;font-weight:600;text-wrap:balance}
-button,input,select,textarea{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
-.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+ font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+h1,h2,h3{margin:0;font-family:"Lora",Georgia,serif;font-weight:600;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:860px;margin:0 auto;padding:60px 20px 90px;display:flex;flex-direction:column;gap:38px}
+@media(max-width:620px){.wrap{padding:38px 16px 64px;gap:30px}}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.16em;
+ text-transform:uppercase;color:var(--ink-3)}
 
-/* chrome */
-.top{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule);
- display:flex;align-items:center;gap:18px;padding:0 20px;height:56px;flex-wrap:wrap}
-.brand{font-family:"Lora",Georgia,serif;font-size:17px;font-weight:600;color:var(--accent);white-space:nowrap}
-.brand span{color:var(--ink-3);font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.1em;
- text-transform:uppercase;margin-left:9px;font-weight:400}
-.spacer{flex:1}
-.ctl{display:flex;align-items:center;gap:7px}
-.ctl label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
-select,input[type=text],input[type=date],textarea{background:var(--surface-2);border:1px solid var(--rule);
- border-radius:4px;padding:6px 9px;font-size:13px;max-width:100%}
-textarea{width:100%;resize:vertical;line-height:1.5;font-size:13px}
-.roles{display:flex;background:var(--surface-2);border:1px solid var(--rule);border-radius:5px;padding:2px;gap:2px}
-.roles button{background:none;border:0;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12.5px;
- font-weight:500;color:var(--ink-2)}
-.roles button[aria-pressed="true"]{background:var(--accent);color:#fff}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .roles button[aria-pressed="true"]{color:#2B1A18}}
-:root[data-theme="dark"] .roles button[aria-pressed="true"]{color:#2B1A18}
+header{display:flex;flex-direction:column;gap:12px;border-bottom:1px solid var(--rule);padding-bottom:30px}
+header h1{font-size:2.9rem;line-height:1.08;color:var(--accent)}
+@media(max-width:620px){header h1{font-size:2.2rem}}
+header .lede{font-family:"Lora",Georgia,serif;font-size:1.18rem;line-height:1.5;color:var(--ink-2);max-width:60ch}
 
-.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 80px;display:flex;flex-direction:column;gap:22px}
-.pagehead{display:flex;flex-direction:column;gap:5px}
-.pagehead h1{font-family:"Lora",Georgia,serif;font-size:26px}
-.pagehead p{margin:0;color:var(--ink-2);max-width:72ch}
-.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)}
-
-.card{background:var(--surface);border:1px solid var(--rule);border-radius:7px;box-shadow:var(--shadow)}
-.card>header{padding:15px 18px;border-bottom:1px solid var(--rule-2);display:flex;align-items:center;
- gap:12px;flex-wrap:wrap}
-.card>header h2{font-size:15px}
-.card>header p{margin:0;color:var(--ink-3);font-size:12.5px;flex-basis:100%}
-.card .body{padding:18px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media(max-width:860px){.grid2{grid-template-columns:1fr}}
-
-.pill{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.09em;text-transform:uppercase;
- padding:3px 8px;border-radius:3px;white-space:nowrap;font-weight:500}
-.p-todo{background:var(--idle-soft);color:var(--idle)}
-.p-part{background:var(--warn-soft);color:var(--warn)}
-.p-done{background:var(--ok-soft);color:var(--ok)}
-.p-acc{background:var(--accent-soft);color:var(--accent)}
-
-/* competency rows */
-.comp{border:1px solid var(--rule);border-radius:6px;padding:13px 14px;display:flex;flex-direction:column;gap:9px;
- background:var(--surface-2)}
-.comp h3{font-size:13.5px}
-.comp .desc{color:var(--ink-3);font-size:12.5px;margin:-4px 0 0}
-.scale{display:flex;gap:6px;flex-wrap:wrap}
-.scale button{width:36px;height:32px;border:1px solid var(--rule);background:var(--surface);border-radius:4px;
- cursor:pointer;font-weight:600;font-size:13px;color:var(--ink-2)}
-.scale button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .scale button[aria-pressed="true"]{color:#2B1A18}}
-:root[data-theme="dark"] .scale button[aria-pressed="true"]{color:#2B1A18}
-.needex{font-size:12px;color:var(--accent);font-weight:500}
-.sidebyside{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.selfchip{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);white-space:nowrap}
-
-/* tables */
-.tw{overflow-x:auto;border-radius:6px}
-table{border-collapse:collapse;width:100%;font-size:13px;min-width:540px}
-th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--rule-2);vertical-align:middle}
-th{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.11em;text-transform:uppercase;
- color:var(--ink-3);background:var(--surface-2);border-bottom:1px solid var(--rule);font-weight:500}
-tbody tr:last-child td{border-bottom:0}
-tbody tr.clickable{cursor:pointer}
-tbody tr.clickable:hover{background:var(--surface-2)}
-td.num{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
-
-/* buttons */
-.btn{background:var(--accent);color:#fff;border:0;border-radius:5px;padding:8px 16px;font-weight:500;
- cursor:pointer;font-size:13px}
+.cta{display:flex;flex-direction:column;gap:14px;background:var(--surface);border:1px solid var(--rule);
+ border-left:3px solid var(--accent);border-radius:7px;padding:26px 28px;box-shadow:var(--shadow)}
+.cta h2{font-size:1.4rem}
+.cta p{color:var(--ink-2);max-width:62ch;font-size:14.5px}
+.btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-weight:600;
+ padding:11px 22px;border-radius:5px;font-size:14.5px;align-self:flex-start}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#2B1A18}}
 :root[data-theme="dark"] .btn{color:#2B1A18}
-.btn.ghost{background:none;color:var(--ink-2);border:1px solid var(--rule)}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.field{display:flex;flex-direction:column;gap:5px;margin-bottom:15px}
-.field label{font-size:12.5px;font-weight:500}
-.field .hint{font-size:12px;color:var(--ink-3)}
 
-/* stat tiles */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
-.stat{background:var(--surface);border:1px solid var(--rule);border-radius:7px;padding:14px 16px;
- display:flex;flex-direction:column;gap:3px}
-.stat .v{font-family:"Lora",Georgia,serif;font-size:27px;line-height:1.05;font-variant-numeric:tabular-nums}
-.stat .k{font-size:11.5px;color:var(--ink-3)}
-.stat.acc .v{color:var(--accent)}
+section{display:flex;flex-direction:column;gap:16px}
+.sec-head{display:flex;flex-direction:column;gap:7px;border-top:2px solid var(--ink);padding-top:14px}
+.sec-head h2{font-size:1.5rem}
+.sec-head p{color:var(--ink-2);max-width:66ch;font-size:14.5px}
 
-/* distribution bars */
-.dist{display:flex;flex-direction:column;gap:7px}
-.dbar{display:grid;grid-template-columns:118px 1fr 42px;gap:11px;align-items:center;font-size:12.5px}
-.dbar .track{background:var(--rule-2);border-radius:3px;height:17px;overflow:hidden}
-.dbar .fill{background:var(--accent);height:100%;border-radius:3px;min-width:2px;transition:width .35s ease}
-.dbar .n{font-family:"IBM Plex Mono",monospace;text-align:right;color:var(--ink-2)}
+.docs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:620px){.docs{grid-template-columns:1fr}}
+.doc{display:flex;flex-direction:column;gap:7px;background:var(--surface);border:1px solid var(--rule);
+ border-radius:7px;padding:20px 22px;text-decoration:none;color:inherit;box-shadow:var(--shadow)}
+.doc:hover{border-color:var(--accent-line)}
+.doc .k{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.14em;
+ text-transform:uppercase;color:var(--accent)}
+.doc h3{font-size:1.06rem;font-family:"IBM Plex Sans",sans-serif;font-weight:600}
+.doc p{font-size:13.5px;color:var(--ink-3);line-height:1.5}
 
-/* maths inspector */
-.calc{background:var(--surface-2);border:1px solid var(--rule);border-radius:6px;padding:14px;
- font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.85;overflow-x:auto}
-.calc .op{color:var(--ink-3)}
-.calc .res{color:var(--accent);font-weight:500}
-.note{background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:6px;padding:12px 14px;
- font-size:12.5px;color:var(--ink-2)}
-.note strong{color:var(--ink)}
-.empty{color:var(--ink-3);font-size:13px;padding:22px;text-align:center}
-.spec{border-left:2px solid var(--accent-line);padding-left:12px;margin:14px 0;font-size:12.5px;color:var(--ink-2)}
-.spec b{color:var(--ink);font-weight:600}
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--rule);margin-bottom:4px;flex-wrap:wrap}
-.tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:9px 14px;cursor:pointer;
- font-size:13.5px;font-weight:500;color:var(--ink-3);margin-bottom:-1px}
-.tabs button[aria-pressed="true"]{color:var(--accent);border-bottom-color:var(--accent)}
-.alert{background:var(--warn-soft);border:1px solid var(--warn);border-radius:6px;padding:14px 16px;
- display:flex;flex-direction:column;gap:9px}
-.alert h3{font-size:14px;color:var(--ink)}
-.alert p{margin:0;font-size:12.5px;color:var(--ink-2)}
-.step{display:grid;grid-template-columns:26px 1fr;gap:11px;align-items:start;font-size:12.5px;color:var(--ink-2)}
-.step .n{font-family:"IBM Plex Mono",monospace;color:var(--warn);font-weight:600}
-.trend{display:flex;gap:4px;align-items:flex-end;height:38px}
-.trend div{width:26px;background:var(--accent);border-radius:2px 2px 0 0;min-height:3px}
-.trend div.empty{background:var(--rule-2)}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.rules{background:var(--surface);border:1px solid var(--rule);border-radius:7px;overflow:hidden}
+.rule-row{display:grid;grid-template-columns:200px 1fr;gap:18px;padding:14px 20px;border-bottom:1px solid var(--rule-2)}
+.rule-row:last-child{border-bottom:none}
+@media(max-width:620px){.rule-row{grid-template-columns:1fr;gap:4px}}
+.rule-row b{font-size:14px}
+.rule-row span{font-size:14px;color:var(--ink-2)}
+
+ol.blockers{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px}
+ol.blockers li{color:var(--ink-2);font-size:14.5px}
+ol.blockers b{color:var(--ink)}
+
+.note{background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:7px;
+ padding:16px 20px;font-size:14px;color:var(--ink-2)}
+.note b{color:var(--ink)}
+footer{border-top:1px solid var(--rule);padding-top:22px;color:var(--ink-3);font-size:13px;line-height:1.7}
 </style>
+</head>
+<body>
+<div class="wrap">
 
-<div class="top">
-  <div class="brand">LS PMS<span>Performance Management System · Prototype</span></div>
-  <div class="ctl"><label for="q">Quarter</label>
-    <select id="q"><option value="FY27-Q2">FY27-Q2 (Jul–Sep 26)</option><option value="FY27-Q3" selected>FY27-Q3 (Oct–Dec 26) · live</option><option value="FY27-Q1">FY27-Q1 (Apr–Jun 26) · closed</option><option value="FY27-Q4">FY27-Q4 (Jan–Mar 27)</option></select></div>
-  <div class="spacer"></div>
-  <div class="ctl"><label>View as</label>
-    <div class="roles" id="roles">
-      <button data-r="employee" aria-pressed="true">Employee</button>
-      <button data-r="manager" aria-pressed="false">Manager</button>
-      <button data-r="hr" aria-pressed="false">HR</button>
-    </div></div>
-</div>
-<div class="wrap" id="app"></div>
+  <header>
+    <p class="eyebrow">Logiciel Solutions &middot; Internal</p>
+    <h1>LS PMS</h1>
+    <p class="lede">The Performance Management System &mdash; a monthly record, a quarterly review and an annual roll-up that feeds the existing appraisal matrix.</p>
+  </header>
 
+  <div class="cta">
+    <p class="eyebrow">Start here</p>
+    <h2>Open the prototype</h2>
+    <p>Runs on the real organisation: 109 active employees, their actual reporting lines and live project allocations. Switch between the employee, manager and HR views from the top bar. In the HR view, <b>Load sample data</b> fills the dashboards.</p>
+    <a class="btn" href="prototype/">Open prototype &rarr;</a>
+  </div>
 
-<script>
-const DATA = {"employees":[{"code":"E0446","name":"Rohit Goel","email":"rohitgoel@logiciel.io","dept":"Sales & Marketing","desig":"Senior Sales Manager","grade":"Grade 6","doj":"24-08-2026","rm_code":"E0432","rm_name":"Anshul Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0447","name":"Kamakshi .","email":"kamakshi@logiciel.io","dept":"Sales & Marketing","desig":"Inside Sales Representative- ( Demand Generation)","grade":"Grade 3","doj":"27-08-2026","rm_code":"E0432","rm_name":"Anshul Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0448","name":"Arpan Mishra","email":"arpan@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Product Manager","grade":"Grade 6","doj":"24-08-2026","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"","sec_name":"","alloc":[{"project":"MIRA","pct":25},{"project":"PSR","pct":75}],"totalPct":100,"eng":true},{"code":"E0445","name":"Shraddha Waghmare","email":"shraddha@logiciel.io","dept":"Sales & Marketing","desig":"Manager- Business Development","grade":"Grade 6","doj":"11-08-2026","rm_code":"E0432","rm_name":"Anshul Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0444","name":"Manish Bidare","email":"manish@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer Fintech","grade":"Grade 6","doj":"07-08-2026","rm_code":"E0074","rm_name":"Shriesh Sharma","sec_code":"","sec_name":"","alloc":[{"project":"MIRA","pct":50},{"project":"PSR","pct":50}],"totalPct":100,"eng":true},{"code":"E0443","name":"Gaurav Pall","email":"gauravpall@logiciel.io","dept":"Engineering and Technology","desig":"Sr. QA Engineer","grade":"Grade 5","doj":"05-08-2026","rm_code":"E0026","rm_name":"Mayank Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0442","name":"Ram Prakash Varanasi","email":"ramprakash@logiciel.io","dept":"Engineering and Technology","desig":"Healthcare Practice Lead","grade":"Grade 8","doj":"24-07-2026","rm_code":"D0096","rm_name":"Umesh Sharma","sec_code":"","sec_name":"","alloc":[{"project":"Healthcare POC","pct":25}],"totalPct":25,"eng":true},{"code":"E0441","name":"Jakkam Deep Kumar","email":"deep@logiciel.io","dept":"Engineering and Technology","desig":"Lead IOS Developer","grade":"Grade 7","doj":"10-07-2026","rm_code":"E0026","rm_name":"Mayank Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"D0076","name":"Lateesh Sharma","email":"lateesh@logiciel.io","dept":"Finance and Legal","desig":"Director of Finance & Compliance","grade":"","doj":"","rm_code":"","rm_name":"","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0440","name":"Anshika Gupta","email":"anshika@logiciel.io","dept":"Human Resources & Admin","desig":"US IT Recruiter","grade":"Grade 4","doj":"01-07-2026","rm_code":"E0432","rm_name":"Anshul Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"D0075","name":"Ajay Sharma","email":"ajay@logiciel.io","dept":"Sales & Marketing","desig":"Director & Co-founder","grade":"","doj":"","rm_code":"","rm_name":"","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0437","name":"Pupesh Arora","email":"pupesh@logiciel.io","dept":"IT & Hardware","desig":"IT Analyst","grade":"Grade 5","doj":"09-06-2026","rm_code":"E0284","rm_name":"Mahesh Kumar Sood","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0436","name":"Vishwajeet .","email":"vishwajeet@logiciel.io","dept":"IT & Hardware","desig":"IT Technician","grade":"Grade 4","doj":"22-06-2026","rm_code":"E0284","rm_name":"Mahesh Kumar Sood","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0435","name":"Suraj Raghu Kumar","email":"suraj@logiciel.io","dept":"Engineering and Technology","desig":"Sr. DevOps Engineer","grade":"Grade 5","doj":"08-06-2026","rm_code":"E0031","rm_name":"Rajan Kumar Das","sec_code":"","sec_name":"","alloc":[{"project":"Ashland Auction","pct":25},{"project":"PSR","pct":25}],"totalPct":50,"eng":true},{"code":"E0432","name":"Anshul Sharma","email":"anshul@logiciel.io","dept":"Sales & Marketing","desig":"Vice President - Sales","grade":"Grade 9","doj":"21-04-2026","rm_code":"D0075","rm_name":"Ajay Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0431","name":"Gurjeet Saini","email":"gurjeet@logiciel.io","dept":"Engineering and Technology","desig":"Sr. AI Engineer","grade":"Grade 6","doj":"20-04-2026","rm_code":"E0427","rm_name":"Kumar Gaurav","sec_code":"","sec_name":"","alloc":[{"project":"AI R&D - 1","pct":100}],"totalPct":100,"eng":true},{"code":"E0427","name":"Kumar Gaurav","email":"kumargaurav@logiciel.io","dept":"Engineering and Technology","desig":"Engineering Manager","grade":"Grade 7","doj":"11-03-2026","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"","sec_name":"","alloc":[{"project":"AI R&D - 1","pct":100},{"project":"Healthcare POC","pct":25}],"totalPct":125,"eng":true},{"code":"E0426","name":"Payal .","email":"payal@logiciel.io","dept":"Human Resources & Admin","desig":"Sr. Talent Acquisition","grade":"Grade 4","doj":"10-03-2026","rm_code":"E0074","rm_name":"Shriesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0425","name":"Tarun Chugh","email":"tarunchugh@logiciel.io","dept":"Engineering and Technology","desig":"Delivery Manager- Software Development","grade":"Grade 7","doj":"05-03-2026","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Logiciel","pct":100}],"totalPct":100,"eng":true},{"code":"E0424","name":"Nayab Khan","email":"nayab@logiciel.io","dept":"Sales & Marketing","desig":"Email Marketing Expert","grade":"Grade 4","doj":"02-03-2026","rm_code":"E0377","rm_name":"\u200bElora Satya Darsi","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0423","name":"Avani Tiwari","email":"avani@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Product Manager","grade":"Grade 6","doj":"09-02-2026","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"","sec_name":"","alloc":[{"project":"AIMS","pct":50}],"totalPct":50,"eng":true},{"code":"E0415","name":"Pramod Kaddimani","email":"pramodk@logiciel.io","dept":"Sales & Marketing","desig":"Head- Strategic Sales(North America)","grade":"Grade 7","doj":"12-01-2026","rm_code":"D0075","rm_name":"Ajay Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0413","name":"Siddharth Rohilla","email":"siddharth@logiciel.io","dept":"Sales & Marketing","desig":"Sales Development Representative","grade":"Grade 4","doj":"15-12-2025","rm_code":"E0415","rm_name":"Pramod Kaddimani","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0411","name":"Suman Das Sarkar","email":"sumandas@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 5","doj":"10-12-2025","rm_code":"E0026","rm_name":"Mayank Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0338","name":"Anuj Gupta","email":"anuj@logiciel.io","dept":"Engineering and Technology","desig":"SE Intern","grade":"Grade 1","doj":"01-12-2025","rm_code":"E0074","rm_name":"Shriesh Sharma","sec_code":"","sec_name":"","alloc":[{"project":"AIMS","pct":100}],"totalPct":100,"eng":true},{"code":"E0341","name":"Ravinder Mishra","email":"ravindermishra@logiciel.io","dept":"Engineering and Technology","desig":"SE Intern","grade":"Grade 1","doj":"01-12-2025","rm_code":"E0035","rm_name":"Anoop Kumar Pathak","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0340","name":"Ram Rattan","email":"ramrattan@logiciel.io","dept":"Engineering and Technology","desig":"SE Intern","grade":"Grade 1","doj":"01-12-2025","rm_code":"E0358","rm_name":"Ravi Heer","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0339","name":"Manjot Singh","email":"manjot@logiciel.io","dept":"Engineering and Technology","desig":"SE Intern","grade":"Grade 1","doj":"01-12-2025","rm_code":"E0427","rm_name":"Kumar Gaurav","sec_code":"","sec_name":"","alloc":[{"project":"AI R&D - 1","pct":100},{"project":"Healthcare POC","pct":50}],"totalPct":150,"eng":true},{"code":"E0408","name":"Rohit Chaurasia","email":"rohitchaurasia@logiciel.io","dept":"Engineering and Technology","desig":"Data Architect","grade":"Grade 7","doj":"01-12-2025","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"E0425","sec_name":"Tarun Chugh","alloc":[{"project":"Healthcare POC","pct":25},{"project":"Power Origin","pct":50}],"totalPct":75,"eng":true},{"code":"E0404","name":"Biswajit Charan","email":"biswajit@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 4","doj":"09-10-2025","rm_code":"E0074","rm_name":"Shriesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":true},{"code":"E0403","name":"Milan Chodvadiya","email":"milan@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 5","doj":"07-10-2025","rm_code":"E0388","rm_name":"Surbhi Airan","sec_code":"","sec_name":"","alloc":[{"project":"AIMS","pct":100}],"totalPct":100,"eng":true},{"code":"E0398","name":"Nikhil Kataria","email":"nikhilkataria@logiciel.io","dept":"Engineering and Technology","desig":"Technical Lead Fintech","grade":"Grade 7","doj":"02-09-2025","rm_code":"E0026","rm_name":"Mayank Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0417","name":"Simran .","email":"simransandhu@logiciel.io","dept":"Human Resources & Admin","desig":"Receptionist","grade":"Grade 1","doj":"18-08-2025","rm_code":"E0074","rm_name":"Shriesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0397","name":"Sajag Singh","email":"sajag@logiciel.io","dept":"Engineering and Technology","desig":"Technical Lead","grade":"Grade 7","doj":"18-08-2025","rm_code":"E0074","rm_name":"Shriesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":true},{"code":"E0394","name":"Neeraj mathur","email":"neerajmathur@logiciel.io","dept":"Sales & Marketing","desig":"Sr. Data Analyst","grade":"Grade 4","doj":"04-08-2025","rm_code":"E0415","rm_name":"Pramod Kaddimani","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0395","name":"Kanika walia","email":"kanika@logiciel.io","dept":"Sales & Marketing","desig":"Sales Development Representative","grade":"Grade 4","doj":"04-08-2025","rm_code":"E0415","rm_name":"Pramod Kaddimani","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0387","name":"Visha Kartik","email":"visha@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Product Manager","grade":"Grade 6","doj":"01-07-2025","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Ashland Auction","pct":50},{"project":"Power Origin","pct":100}],"totalPct":150,"eng":true},{"code":"E0389","name":"Pawan Kumar","email":"pawankumar@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 5","doj":"17-07-2025","rm_code":"E0016","rm_name":"Nitin Chamola","sec_code":"","sec_name":"","alloc":[{"project":"Splink","pct":100}],"totalPct":100,"eng":true},{"code":"E0388","name":"Surbhi Airan","email":"surbhiairan@logiciel.io","dept":"Engineering and Technology","desig":"Technical Lead","grade":"Grade 6","doj":"07-07-2025","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"","sec_name":"","alloc":[{"project":"AIMS","pct":100}],"totalPct":100,"eng":true},{"code":"E0386","name":"Saumyaranjan Dash","email":"saumyaranjan@logiciel.io","dept":"Sales & Marketing","desig":"Sr. Graphic Designer","grade":"Grade 5","doj":"16-06-2025","rm_code":"E0377","rm_name":"\u200bElora Satya Darsi","sec_code":"E0085","sec_name":"Harpreet Singh","alloc":[],"totalPct":0,"eng":false},{"code":"E0384","name":"Deepika Singh","email":"deepika@logiciel.io","dept":"Sales & Marketing","desig":"Digital Marketing Manager","grade":"Grade 5","doj":"01-07-2025","rm_code":"E0377","rm_name":"\u200bElora Satya Darsi","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0383","name":"Joshva Imanuvel","email":"joshva@logiciel.io","dept":"Engineering and Technology","desig":"DevOps Engineer","grade":"Grade 4","doj":"14-05-2025","rm_code":"E0031","rm_name":"Rajan Kumar Das","sec_code":"","sec_name":"","alloc":[{"project":"MIRA","pct":25},{"project":"Power Origin","pct":25}],"totalPct":50,"eng":true},{"code":"E0396","name":"Surbhi Gangwal","email":"surbhigangwal@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 6","doj":"01-04-2025","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Power Origin","pct":100},{"project":"Trust & Will","pct":100}],"totalPct":200,"eng":true},{"code":"C0376","name":"Sunitha Uatala","email":"sunitha@logiciel.io","dept":"Sales & Marketing","desig":"Consultant","grade":"Grade 5","doj":"17-02-2025","rm_code":"E0377","rm_name":"\u200bElora Satya Darsi","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0377","name":"\u200bElora Satya Darsi","email":"elora@logiciel.io","dept":"Sales & Marketing","desig":"Head of Marketing","grade":"Grade 6","doj":"03-02-2025","rm_code":"D0075","rm_name":"Ajay Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0369","name":"Anurag Makol","email":"anurag.makol@logiciel.io","dept":"Engineering and Technology","desig":"Technical Lead","grade":"Grade 6","doj":"28-02-2025","rm_code":"E0425","rm_name":"Tarun Chugh","sec_code":"","sec_name":"","alloc":[{"project":"Power Origin","pct":100}],"totalPct":100,"eng":true},{"code":"E0367","name":"Geetanjali Dua","email":"geetanjali@logiciel.io","dept":"Finance and Legal","desig":"Company Secretary","grade":"Grade 4","doj":"26-02-2025","rm_code":"D0076","rm_name":"Lateesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0363","name":"Oaliu Ahamed","email":"oaliu@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 5","doj":"09-01-2025","rm_code":"E0229","rm_name":"Manveer Singh","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0355","name":"Sahil Chawla","email":"sahilchawla@logiciel.io","dept":"Engineering and Technology","desig":"Sr. UI/UX Designer","grade":"Grade 5","doj":"20-11-2024","rm_code":"E0085","rm_name":"Harpreet Singh","sec_code":"","sec_name":"","alloc":[{"project":"Ashland Auction","pct":50},{"project":"PSR","pct":50}],"totalPct":100,"eng":true},{"code":"E0053","name":"Rahul Kumar","email":"rahulbadhwar@logiciel.io","dept":"Finance and Legal","desig":"Junior Account Officer","grade":"Grade 4","doj":"01-11-2024","rm_code":"D0076","rm_name":"Lateesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0353","name":"Suresh Kumar","email":"suresh@logiciel.io","dept":"Finance and Legal","desig":"Junior Account Officer","grade":"Grade 4","doj":"04-11-2024","rm_code":"D0076","rm_name":"Lateesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0352","name":"Kunal Dhaibar","email":"kunaldhaibar@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 5","doj":"28-10-2024","rm_code":"E0229","rm_name":"Manveer Singh","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0351","name":"shantanu Bombatkar","email":"shantanu@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 5","doj":"21-10-2024","rm_code":"E0398","rm_name":"Nikhil Kataria","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0358","name":"Ravi Heer","email":"raviheer@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 5","doj":"01-01-2025","rm_code":"E0026","rm_name":"Mayank Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0348","name":"Rahul Yadav","email":"rahulyadav@logiciel.io","dept":"Human Resources & Admin","desig":"Sr. Talent Acquisition","grade":"Grade 4","doj":"08-10-2024","rm_code":"E0074","rm_name":"Shriesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0347","name":"Gurpreet Singh Thiara","email":"gurpreet.thiara@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 3","doj":"30-09-2024","rm_code":"E0369","rm_name":"Anurag Makol","sec_code":"","sec_name":"","alloc":[{"project":"Ashland Auction","pct":100}],"totalPct":100,"eng":true},{"code":"E0345","name":"Jyoti Prakash","email":"prakash@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"24-09-2024","rm_code":"E0074","rm_name":"Shriesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":true},{"code":"E0344","name":"Mithlesh Kotnala","email":"mithlesh@logiciel.io","dept":"Human Resources & Admin","desig":"Talent Aquisition Manager","grade":"Grade 5","doj":"08-08-2024","rm_code":"E0074","rm_name":"Shriesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0342","name":"Tajinder Arora","email":"tajinderarora@logiciel.io","dept":"IT & Hardware","desig":"Sr. IT Engineer","grade":"Grade 4","doj":"10-07-2024","rm_code":"E0284","rm_name":"Mahesh Kumar Sood","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0306","name":"Himanshu Sharma","email":"himanshu@logiciel.io","dept":"Engineering and Technology","desig":"Associate Software Engineer","grade":"Grade 2","doj":"12-02-2024","rm_code":"E0022","rm_name":"Surjit Singh","sec_code":"","sec_name":"","alloc":[{"project":"SRS","pct":100}],"totalPct":100,"eng":true},{"code":"E0302","name":"Richa Bisht","email":"richa@logiciel.io","dept":"Engineering and Technology","desig":"Associate Software Engineer","grade":"Grade 2","doj":"12-02-2024","rm_code":"E0377","rm_name":"\u200bElora Satya Darsi","sec_code":"","sec_name":"","alloc":[{"project":"Marketing","pct":100}],"totalPct":100,"eng":true},{"code":"E0324","name":"Sachin Thakur","email":"sachin01@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 5","doj":"07-02-2024","rm_code":"E0398","rm_name":"Nikhil Kataria","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0323","name":"Prateek Tripathi","email":"prateek@logiciel.io","dept":"Engineering and Technology","desig":"DevOps Engineer","grade":"Grade 6","doj":"10-01-2024","rm_code":"E0031","rm_name":"Rajan Kumar Das","sec_code":"","sec_name":"","alloc":[{"project":"SRS","pct":25},{"project":"Splink","pct":25}],"totalPct":50,"eng":true},{"code":"E0074","name":"Shriesh Sharma","email":"shriesh@logiciel.io","dept":"Human Resources & Admin","desig":"Head of Human Resources & Compliance","grade":"","doj":"","rm_code":"","rm_name":"","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0318","name":"Gurinder Singh","email":"gurinder01@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"08-11-2023","rm_code":"E0035","rm_name":"Anoop Kumar Pathak","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0311","name":"Yadvinder Singh","email":"yadvinder@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Business Analyst","grade":"Grade 5","doj":"07-08-2023","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Ashland Auction","pct":50},{"project":"Logiciel","pct":50},{"project":"Monj","pct":10}],"totalPct":110,"eng":true},{"code":"E0296","name":"Anurag Kumar","email":"anurag@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"29-05-2023","rm_code":"E0414","rm_name":"Prashant Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Kickstart Enhancements & Maintenance","pct":100}],"totalPct":100,"eng":true},{"code":"E0002","name":"Ravinder Kaur","email":"ravinderkaur@logiciel.io","dept":"Human Resources & Admin","desig":"HR Executive","grade":"Grade 4","doj":"20-03-2023","rm_code":"E0074","rm_name":"Shriesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0291","name":"Amit Chandra Mallah","email":"amitmallah@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 5","doj":"20-03-2023","rm_code":"E0074","rm_name":"Shriesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":true},{"code":"E0263","name":"Palak .","email":"palak@logiciel.io","dept":"Engineering and Technology","desig":"Associate Software Engineer","grade":"Grade 2","doj":"01-03-2023","rm_code":"E0022","rm_name":"Surjit Singh","sec_code":"","sec_name":"","alloc":[{"project":"SRS","pct":100}],"totalPct":100,"eng":true},{"code":"E0414","name":"Prashant Kumar","email":"prashant@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Business Analyst (BA3)","grade":"Grade 5","doj":"05-01-2026","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"E0387","sec_name":"Visha Kartik","alloc":[{"project":"Kickstart Enhancements & Maintenance","pct":50},{"project":"Power Origin","pct":50}],"totalPct":100,"eng":true},{"code":"E0284","name":"Mahesh Kumar Sood","email":"mahesh@logiciel.io","dept":"Engineering and Technology","desig":"QA Manager","grade":"Grade 8","doj":"30-01-2023","rm_code":"D0096","rm_name":"Umesh Sharma","sec_code":"","sec_name":"","alloc":[{"project":"Logiciel","pct":100}],"totalPct":100,"eng":true},{"code":"E0267","name":"Prince Kumar","email":"princekumar@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 3","doj":"17-01-2023","rm_code":"E0369","rm_name":"Anurag Makol","sec_code":"","sec_name":"","alloc":[{"project":"Power Origin","pct":100}],"totalPct":100,"eng":true},{"code":"E0261","name":"Ishant Kumar","email":"ishant@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"02-01-2023","rm_code":"E0396","rm_name":"Surbhi Gangwal","sec_code":"","sec_name":"","alloc":[{"project":"Power Origin","pct":100}],"totalPct":100,"eng":true},{"code":"E0278","name":"Pankaj Sharma","email":"pankaj@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"28-12-2022","rm_code":"E0369","rm_name":"Anurag Makol","sec_code":"","sec_name":"","alloc":[{"project":"Power Origin","pct":100}],"totalPct":100,"eng":true},{"code":"E0273","name":"Pooja Mehra","email":"pooja@logiciel.io","dept":"Sales & Marketing","desig":"Marketing Analyst","grade":"Grade 2","doj":"16-11-2022","rm_code":"E0377","rm_name":"\u200bElora Satya Darsi","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0254","name":"Manibha Jain","email":"manibha@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 6","doj":"26-07-2022","rm_code":"E0369","rm_name":"Anurag Makol","sec_code":"","sec_name":"","alloc":[{"project":"Ashland Auction","pct":100}],"totalPct":100,"eng":true},{"code":"E0250","name":"Gurpreet Singh","email":"gurpreetsingh@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"08-07-2022","rm_code":"E0035","rm_name":"Anoop Kumar Pathak","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0251","name":"Vishal Gupta","email":"vishal@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"08-07-2022","rm_code":"E0358","rm_name":"Ravi Heer","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0056","name":"Surinder Singh","email":"surinder@logiciel.io","dept":"Finance and Legal","desig":"Accounts Manager","grade":"Grade 6","doj":"01-11-2016","rm_code":"D0076","rm_name":"Lateesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"D0096","name":"Umesh Sharma","email":"umesh@logiciel.io","dept":"IT & Hardware","desig":"Managing Director & Co-founder","grade":"","doj":"","rm_code":"","rm_name":"","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0162","name":"Shivani Thakur","email":"shivani@logiciel.io","dept":"Human Resources & Admin","desig":"Sr. HR Executive","grade":"Grade 5","doj":"31-03-2021","rm_code":"E0074","rm_name":"Shriesh Sharma","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":false},{"code":"E0229","name":"Manveer Singh","email":"manveer@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 6","doj":"24-03-2022","rm_code":"E0026","rm_name":"Mayank Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0184","name":"Deepali Arora","email":"deepali@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"06-07-2021","rm_code":"E0229","rm_name":"Manveer Singh","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0221","name":"Dikshit Sharma","email":"dikshit@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"24-01-2022","rm_code":"E0358","rm_name":"Ravi Heer","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0188","name":"Parshant Kumar","email":"parshant@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"07-07-2021","rm_code":"E0358","rm_name":"Ravi Heer","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0159","name":"Amanpreet Kaur","email":"amanpreet@logiciel.io","dept":"Engineering and Technology","desig":"Quality Assurance Engineer","grade":"Grade 4","doj":"08-03-2021","rm_code":"E0284","rm_name":"Mahesh Kumar Sood","sec_code":"E0387","sec_name":"Visha Kartik","alloc":[{"project":"AIMS","pct":50},{"project":"Power Origin","pct":50}],"totalPct":100,"eng":true},{"code":"E0122","name":"Saloni Kochhar","email":"saloni@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"03-02-2020","rm_code":"E0369","rm_name":"Anurag Makol","sec_code":"","sec_name":"","alloc":[{"project":"Power Origin","pct":100}],"totalPct":100,"eng":true},{"code":"E0050","name":"Sakshi Gaba","email":"sakshi@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 5","doj":"15-01-2020","rm_code":"E0369","rm_name":"Anurag Makol","sec_code":"","sec_name":"","alloc":[],"totalPct":0,"eng":true},{"code":"E0016","name":"Nitin Chamola","email":"nitin@logiciel.io","dept":"Engineering and Technology","desig":"Team Lead","grade":"Grade 6","doj":"06-09-2013","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Splink","pct":100}],"totalPct":100,"eng":true},{"code":"E0192","name":"Gurwinder Singh","email":"gurwinder@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"02-08-2021","rm_code":"E0398","rm_name":"Nikhil Kataria","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0187","name":"Mohit Kumar","email":"mohit@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"07-07-2021","rm_code":"E0369","rm_name":"Anurag Makol","sec_code":"","sec_name":"","alloc":[{"project":"Ashland Auction","pct":100}],"totalPct":100,"eng":true},{"code":"E0186","name":"Mandeep Kaur","email":"mandeep@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 3","doj":"06-07-2021","rm_code":"E0369","rm_name":"Anurag Makol","sec_code":"","sec_name":"","alloc":[{"project":"Power Origin","pct":100}],"totalPct":100,"eng":true},{"code":"E0182","name":"Tajinder Singh","email":"tajinder.singh@logiciel.io","dept":"Engineering and Technology","desig":"Software Engineer","grade":"Grade 4","doj":"06-07-2021","rm_code":"E0035","rm_name":"Anoop Kumar Pathak","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0161","name":"Amit Sharma","email":"amit@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 5","doj":"24-03-2021","rm_code":"E0388","rm_name":"Surbhi Airan","sec_code":"","sec_name":"","alloc":[{"project":"AIMS","pct":75},{"project":"Monj","pct":25}],"totalPct":100,"eng":true},{"code":"E0095","name":"Deepak Nangla","email":"deepak@logiciel.io","dept":"Engineering and Technology","desig":"Sr. QA Engineer","grade":"Grade 5","doj":"01-10-2019","rm_code":"E0026","rm_name":"Mayank Kumar","sec_code":"E0284","sec_name":"Mahesh Kumar Sood","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0085","name":"Harpreet Singh","email":"harpreet@logiciel.io","dept":"Engineering and Technology","desig":"Sr. UI/UX Designer","grade":"Grade 6","doj":"18-09-2019","rm_code":"E0427","rm_name":"Kumar Gaurav","sec_code":"","sec_name":"","alloc":[{"project":"AI R&D - 1","pct":100},{"project":"MIRA","pct":25}],"totalPct":125,"eng":true},{"code":"E0119","name":"Megha Bisht","email":"megha@logiciel.io","dept":"Engineering and Technology","desig":"UI/UX Designer","grade":"Grade 3","doj":"16-05-2019","rm_code":"E0026","rm_name":"Mayank Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0040","name":"Pawan Kumar Arora","email":"pawan@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 6","doj":"01-01-2019","rm_code":"E0398","rm_name":"Nikhil Kataria","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0035","name":"Anoop Kumar Pathak","email":"anoop@logiciel.io","dept":"Engineering and Technology","desig":"Sr. Software Engineer","grade":"Grade 6","doj":"01-01-2019","rm_code":"E0026","rm_name":"Mayank Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0069","name":"Jasmel Singh","email":"jasmel@logiciel.io","dept":"Engineering and Technology","desig":"DevOps Engineer","grade":"Grade 6","doj":"19-02-2018","rm_code":"E0031","rm_name":"Rajan Kumar Das","sec_code":"","sec_name":"","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0018","name":"Gurpreet Singh","email":"gurpreet@logiciel.io","dept":"Engineering and Technology","desig":"Associate Team Lead","grade":"Grade 5","doj":"01-10-2015","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"E0423","sec_name":"Avani Tiwari","alloc":[{"project":"Healthcare POC","pct":100}],"totalPct":100,"eng":true},{"code":"E0008","name":"Abhishek Mahajan","email":"abhishek@logiciel.io","dept":"Engineering and Technology","desig":"Sr. UI/UX Designer","grade":"Grade 5","doj":"01-10-2015","rm_code":"E0369","rm_name":"Anurag Makol","sec_code":"","sec_name":"","alloc":[{"project":"Ashland Auction","pct":100}],"totalPct":100,"eng":true},{"code":"E0025","name":"Sachiv Mehta","email":"sachiv@logiciel.io","dept":"Engineering and Technology","desig":"Team Lead","grade":"Grade 6","doj":"12-12-2014","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"","sec_name":"","alloc":[{"project":"Trust & Will","pct":100}],"totalPct":100,"eng":true},{"code":"E0026","name":"Mayank Kumar","email":"mayank@logiciel.io","dept":"Engineering and Technology","desig":"Team Lead","grade":"Grade 7","doj":"01-08-2014","rm_code":"D0075","rm_name":"Ajay Sharma","sec_code":"","sec_name":"","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0022","name":"Surjit Singh","email":"surjit@logiciel.io","dept":"Engineering and Technology","desig":"Associate Team Lead","grade":"Grade 5","doj":"15-01-2014","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"","sec_name":"","alloc":[{"project":"AIMS","pct":25},{"project":"Kickstart DevOps","pct":10},{"project":"SRS","pct":75}],"totalPct":110,"eng":true},{"code":"E0007","name":"Mamta Rani","email":"mamta@logiciel.io","dept":"Engineering and Technology","desig":"Sr. UI/UX Designer","grade":"Grade 5","doj":"04-02-2013","rm_code":"E0085","rm_name":"Harpreet Singh","sec_code":"","sec_name":"","alloc":[{"project":"Logiciel Website","pct":10},{"project":"PSR","pct":75},{"project":"Power Origin","pct":25}],"totalPct":110,"eng":true},{"code":"E0031","name":"Rajan Kumar Das","email":"rajan@logiciel.io","dept":"Engineering and Technology","desig":"DevOps Engineer","grade":"Grade 6","doj":"07-07-2012","rm_code":"E0089","rm_name":"Ankit Kumar","sec_code":"E0026","sec_name":"Mayank Kumar","alloc":[{"project":"Leap","pct":100}],"totalPct":100,"eng":true},{"code":"E0089","name":"Ankit Kumar","email":"ankit@logiciel.io","dept":"Engineering and Technology","desig":"Director Engineering and Delivery","grade":"Grade 8","doj":"27-08-2010","rm_code":"D0096","rm_name":"Umesh Sharma","sec_code":"","sec_name":"","alloc":[{"project":"Logiciel","pct":100}],"totalPct":100,"eng":true}],"projectLead":{"Ashland Auction":"Visha Kartik","AIMS":"Surbhi Airan","Power Origin":"Anurag Makol","Monj":"Yadvinder Singh","Logiciel":"Tarun Chugh","Leap":"Nikhil Kataria","Kickstart Enhancements & Maintenance":"Prashant Kumar","MIRA":"Arpan Mishra","PSR":"Arpan Mishra","AI R&D - 1":"Kumar Gaurav","Healthcare POC":"Kumar Gaurav","SRS":"Surjit Singh","Logiciel Website":"","Splink":"Nitin Chamola","Marketing":"","Trust & Will":"Sachiv Mehta","Kickstart DevOps":"Surjit Singh"},"crosswalk":{"00000096":"D0096","00000075":"D0075","00000076":"D0076","00000074":"E0074","C0377":"E0377","C0384":"E0384","C0387":"E0387","C0388":"E0388","C0408":"E0408","C0396":"E0396","HRM1":"E0443","E0286":"E0414","E0396":"E0417"}};
-/* Six competencies. Two carry double weight. Two vary by function. */
-const COMPS=[
- {n:"Delivery & Accountability",d:"Delivers what was agreed, on the timeline agreed. Owns the outcome. Raises problems early rather than at the deadline.",w:2},
- {n:"Technical / Functional Skill",d:"",w:2,v:"tech"},
- {n:"Quality of Work",d:"",w:1,v:"qual"},
- {n:"Problem Solving & Judgement",d:"Breaks a problem down, chooses a sensible path, knows when to decide and when to escalate.",w:1},
- {n:"Communication & Collaboration",d:"Clear in writing and in person, with the team and outward to clients. Works well with people unlike them.",w:1},
- {n:"Learning & Growth",d:"Builds new capability deliberately and applies it to real work.",w:1}];
-const NC=COMPS.length, WSUM=COMPS.reduce((s,c)=>s+c.w,0);
-const FUNCDEF={
- "Engineering and Technology":{tech:"Code, design and tooling in their stack; depth appropriate to grade.",qual:"Defects reaching QA or production, rework, incidents traced to their work."},
- "Sales & Marketing":{tech:"Pipeline management, proposal craft, domain knowledge.",qual:"Accuracy of proposals and forecasts; data hygiene in the CRM."},
- "Human Resources & Admin":{tech:"Recruitment, policy, employee relations, systems.",qual:"Accuracy of records, letters and payroll inputs."},
- "Finance and Legal":{tech:"Statutory knowledge, controls, systems.",qual:"Error rate, audit findings, corrections after issue."},
- "IT & Hardware":{tech:"Infrastructure, support, security practice.",qual:"Repeat tickets, unresolved root causes."}};
-function cdesc(ci,code){const c=COMPS[ci]; if(!c.v) return c.d;
-  const d=(BYCODE[code]||{}).dept, f=FUNCDEF[d];
-  return (f&&f[c.v])||"Defined per function.";}
-function compLabel(ci){return COMPS[ci].n+(COMPS[ci].w>1?" · primary":"");}
-const SCALE=["Unsatisfactory","Needs Improvement","Meets Expectations","Exceeds Expectations","Outstanding"];
-const TODAY="2026-10-06", NOW_MONTH="2026-10";
-const QS=["FY27-Q1","FY27-Q2","FY27-Q3","FY27-Q4"];
-const QLABEL={"FY27-Q1":"Apr–Jun 26","FY27-Q2":"Jul–Sep 26","FY27-Q3":"Oct–Dec 26","FY27-Q4":"Jan–Mar 27"};
-const QMONTHS={"FY27-Q1":["2026-04","2026-05","2026-06"],"FY27-Q2":["2026-07","2026-08","2026-09"],
- "FY27-Q3":["2026-10","2026-11","2026-12"],"FY27-Q4":["2027-01","2027-02","2027-03"]};
-const MNAME={"2026-04":"April 2026","2026-05":"May 2026","2026-06":"June 2026","2026-07":"July 2026",
- "2026-08":"August 2026","2026-09":"September 2026","2026-10":"October 2026","2026-11":"November 2026",
- "2026-12":"December 2026","2027-01":"January 2027","2027-02":"February 2027","2027-03":"March 2027"};
-/* the cycle administrator closes a quarter; until then every month in it stays editable */
-const QCLOSED={"FY27-Q1":true,"FY27-Q2":false,"FY27-Q3":false,"FY27-Q4":false};
-const LOW_Q=2.5, LOW_RUN=3.0;
-
-const EMP=DATA.employees, BYCODE={}; EMP.forEach(e=>BYCODE[e.code]=e);
-const BYNAME={}; EMP.forEach(e=>{(BYNAME[e.name]=BYNAME[e.name]||[]).push(e);});
-const LEADCODE={}; Object.entries(DATA.projectLead).forEach(([p,n])=>{const c=BYNAME[n]; if(c&&c.length) LEADCODE[p]=c[0].code;});
-
-const S={role:"employee",tab:"month",quarter:"FY27-Q3",me:null,mgr:null,open:null,reviews:{},logs:{},seeded:false,inspect:null};
-S.me=(EMP.find(e=>e.alloc.length>1)||EMP[0]).code;
-S.mgr=(function(){const c={};EMP.forEach(e=>{if(e.rm_code)c[e.rm_code]=(c[e.rm_code]||0)+1});
-  return Object.entries(c).sort((a,b)=>b[1]-a[1])[0][0];})();
-
-const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
-const opt=(l,v,sel)=>`<option value="${esc(v)}"${v===sel?" selected":""}>${esc(l)}</option>`;
-const rkey=(c,q)=>c+"|"+q;
-function rec(c,q){q=q||S.quarter;const k=rkey(c,q);
-  if(!S.reviews[k])S.reviews[k]={self:null,rm:null,o2o:null,commit:"",lead:"",pnote:null,comments:{}};
-  return S.reviews[k];}
-const avg=a=>a&&a.length===NC&&a.every(x=>x)?a.reduce((s,x,i)=>s+x*COMPS[i].w,0)/WSUM:null;
-
-/* V1 RULE — primary reporting manager rates. Project leads comment only. */
-function ratingRM(code){
-  const e=BYCODE[code]; if(!e) return null;
-  if(e.rm_code && BYCODE[e.rm_code]) return e.rm_code;
-  if(e.alloc&&e.alloc.length){const b=[...e.alloc].sort((x,y)=>y.pct-x.pct)[0];
-    const lc=LEADCODE[b.project]; if(lc&&lc!==code) return lc;}
-  return null;
-}
-function commenters(code){
-  const e=BYCODE[code]; if(!e||!e.alloc) return [];
-  const rm=ratingRM(code), agg={};
-  e.alloc.forEach(a=>{const lc=LEADCODE[a.project];
-    if(!lc||lc===code||lc===rm) return;
-    if(!agg[lc])agg[lc]={code:lc,pct:0,projects:[]};
-    agg[lc].pct+=a.pct; agg[lc].projects.push(a.project+" "+a.pct+"%");});
-  return Object.values(agg).map(x=>({...x,name:(BYCODE[x.code]||{}).name||x.code})).sort((a,b)=>b.pct-a.pct);
-}
-function finalFor(code,q){ if(!eligible(code,q).ok) return null;
-  const r=rec(code,q); const a=r.rm&&avg(r.rm.c);
-  return a==null?null:Math.round(a*100)/100;}
-function annual(code){
-  const vals=QS.map(q=>({q,v:finalFor(code,q)}));
-  const got=vals.filter(x=>x.v!=null);
-  const raw=got.length?got.reduce((s,x)=>s+x.v,0)/got.length:null;
-  return {vals,got:got.length,raw:raw==null?null:Math.round(raw*100)/100,
-          whole:raw==null?null:Math.round(raw)};
-}
-function gapFor(code,q){const r=rec(code,q||S.quarter);
-  const sa=r.self&&avg(r.self.c), ma=r.rm&&avg(r.rm.c);
-  if(sa==null||ma==null) return null;
-  return Math.round((sa-ma)*100)/100;}
-function mgrStats(mc){
-  const team=EMP.filter(e=>e.code!==mc&&ratingRM(e.code)===mc);
-  const vals=team.map(e=>finalFor(e.code)).filter(v=>v!=null);
-  return {n:team.length,rated:vals.length,
-    avg:vals.length?Math.round(vals.reduce((s,v)=>s+v,0)/vals.length*100)/100:null};}
-function lowFlag(code){
-  const vals=QS.map(q=>finalFor(code,q)).filter(v=>v!=null);
-  const cur=finalFor(code,S.quarter);
-  if(cur!=null&&cur<LOW_Q) return "Quarter below "+LOW_Q.toFixed(1);
-  if(vals.length>=2){const last2=vals.slice(-2); if(last2.every(v=>v<LOW_RUN)) return "Two consecutive quarters below "+LOW_RUN.toFixed(1);}
-  return null;
-}
-const QEND={"FY27-Q1":"2026-06-30","FY27-Q2":"2026-09-30","FY27-Q3":"2026-12-31","FY27-Q4":"2027-03-31"};
-const MIN_DAYS=42;   /* six weeks with the rating manager */
-function doj(e){const d=(e.doj||"").split("-");return d.length===3?d[2]+"-"+d[1]+"-"+d[0]:null;}
-function daysBetween(a,b){return Math.round((new Date(b)-new Date(a))/86400000);}
-function eligible(code,q){const e=BYCODE[code],j=doj(e);q=q||S.quarter;
-  if(!j) return {ok:true};
-  const d=daysBetween(j,QEND[q]);
-  if(d<MIN_DAYS) return {ok:false,why:d<0?"Joined after this quarter":"Only "+Math.max(d,0)+" days in the quarter — under the "+MIN_DAYS+"-day minimum"};
-  return {ok:true};}
-function monthState(m,q){
-  if(QCLOSED[q]) return "closed";
-  if(m>NOW_MONTH) return "future";
-  return "open";
-}
-const lkey=(c,m,w)=>c+"|"+m+"|"+w;
-const getLog=(c,m,w)=>S.logs[lkey(c,m,w)]||null;
-function setLog(c,m,w,t){ if(!t||!t.trim()) delete S.logs[lkey(c,m,w)];
-  else S.logs[lkey(c,m,w)]={text:t,at:TODAY}; }
-function statusOf(code,q){const el=eligible(code,q); if(!el.ok) return "Not applicable";
-  const r=rec(code,q||S.quarter);
-  if(r.o2o&&r.o2o.held) return "Closed";
-  if(r.rm&&avg(r.rm.c)!=null) return "Manager done";
-  if(r.self) return "Self done";
-  return "Not started";}
-const PILL={"Not started":"p-todo","Self done":"p-part","Manager done":"p-acc","Closed":"p-done","Not applicable":"p-todo"};
-
-function scaleRow(idx,val,act,exVal,exAct){
-  let b='<div class="scale">';
-  for(let i=1;i<=5;i++) b+=`<button type="button" data-act="${act}" data-i="${idx}" data-v="${i}" aria-pressed="${val===i}" title="${i} — ${SCALE[i-1]}">${i}</button>`;
-  b+='</div>';
-  if(val>=4){ b+=`<div class="needex">A written example is required at ${val}. Name the project, the deliverable and roughly when.</div>`;
-    b+=`<textarea rows="2" data-act="${exAct}" data-i="${idx}" placeholder="e.g. Led the Power Origin payments cutover in August; zero rollback.">${esc(exVal||"")}</textarea>`;}
-  return b;
-}
-function tabs(items){ return `<div class="tabs">${items.map(t=>
-  `<button data-act="tab" data-t="${t[0]}" aria-pressed="${S.tab===t[0]}">${esc(t[1])}</button>`).join("")}</div>`; }
-
-function monthBlock(code,m,q,who){
-  const st=monthState(m,q), emp=getLog(code,m,"employee"), rm=getLog(code,m,"manager");
-  const pill = st==="open"?'<span class="pill p-acc">Open</span>'
-             : st==="closed"?'<span class="pill p-done">Quarter closed</span>'
-             :'<span class="pill p-todo">Not started</span>';
-  const entry=(l,v)=> v?`<div class="spec"><b>${l}.</b> ${esc(v.text)} <span class="selfchip">· recorded ${esc(v.at)}</span></div>`
-                       :`<div class="spec" style="opacity:.55"><b>${l}.</b> No entry.</div>`;
-  let ed="";
-  if(st==="open"&&who){const cur=getLog(code,m,who);
-    ed=`<div class="field" style="margin:9px 0 0">
-      <span class="hint">What they did &nbsp;·&nbsp; What you noticed &nbsp;·&nbsp; Anything to flag</span>
-      <textarea rows="3" data-act="mlog" data-code="${code}" data-m="${m}" data-who="${who}"
-      placeholder="Shipped the Leap payments screen. Picked up the API work without being asked. Still slow to raise blockers.">${esc(cur?cur.text:"")}</textarea></div>`;}
-  else if(st==="closed") ed='<div class="selfchip" style="margin-top:7px">The quarter is closed. This entry is now a fixed record.</div>';
-  else ed='<div class="selfchip" style="margin-top:7px">Not open yet.</div>';
-  return `<div class="comp"><div class="row" style="justify-content:space-between"><h3>${esc(MNAME[m]||m)}</h3>${pill}</div>
-    ${entry("Employee",emp)}${entry("Manager",rm)}${ed}</div>`;
-}
-const QNOTE=`<div class="note">Months stay editable for as long as the quarter is open — a missed October line can be added in December.
- The cycle administrator closes the quarter, and from that point the record is fixed. That is what stops July being written in March.</div>`;
-
-/* ---------------- EMPLOYEE ---------------- */
-function viewEmployee(){
-  const e=BYCODE[S.me], r=rec(S.me);
-  const self=r.self||{c:Array(NC).fill(null),ex:Array(NC).fill(""),did:"",blk:""};
-  const T=tabs([["month","Monthly record"],["quarter","Quarterly review"],["year","My year"]]);
-  const picker=`<div class="card"><div class="body">
-    <div class="row"><label class="eyebrow" for="who">View as employee</label>
-      <select id="who" data-act="setme" style="min-width:250px">${EMP.map(x=>opt(x.name+" · "+x.desig,x.code,S.me)).join("")}</select>
-      <span class="pill ${PILL[statusOf(S.me)]}">${esc(statusOf(S.me))}</span></div>
-    <div class="spec" style="margin-bottom:0"><b>${esc(e.name)}</b> · ${esc(e.desig)} · ${esc(e.dept)} · ${esc(e.grade||"grade not set")}
-      · rated by <b>${esc((BYCODE[ratingRM(S.me)]||{}).name||"—")}</b>
-      ${e.alloc.length?" · "+e.alloc.map(a=>esc(a.project)+" "+a.pct+"%").join(" · "):" · on bench this quarter"}</div></div></div>`;
-  const hd=`<div class="pagehead"><p class="eyebrow">Employee view · ${esc(S.quarter)} ${esc(QLABEL[S.quarter])}</p>
-    <h1>${S.tab==="month"?"Your monthly record":S.tab==="quarter"?"Your quarterly review":"Your year so far"}</h1></div>`;
-  if(S.tab==="year") return hd+picker+T+annualCard(S.me,false);
-  if(S.tab==="quarter"&&r.o2o&&r.o2o.held) return hd+picker+T+`
-    <div class="card"><header><h2>Your ${esc(S.quarter)} rating</h2></header><div class="body">
-      <div class="stats" style="margin-bottom:14px">
-        <div class="stat acc"><span class="v">${(finalFor(S.me)||0).toFixed(2)}</span><span class="k">Released by your manager</span></div>
-        <div class="stat"><span class="v">${(avg(r.self.c)||0).toFixed(2)}</span><span class="k">Your self-assessment</span></div></div>
-      <div class="spec"><b>What was concluded.</b> ${esc((r.o2o&&r.o2o.text)||"—")}</div>
-      <div class="spec"><b>Commitments for next quarter.</b> ${esc(r.commit)||"—"}</div>
-      <div class="field" style="margin-top:16px"><label>Your reflection</label>
-        <span class="hint">Your own words on the conversation and the rating. Your manager and HR see this; it cannot be edited by them.</span>
-        <textarea rows="3" data-act="reflect" data-code="${S.me}" placeholder="What you agree with, what you don't, and what you want to do about it.">${esc(r.reflect||"")}</textarea></div>
-      <div class="note">This closes the cycle. In FY26 there was nowhere for this to go, so it went to HR as an email.</div>
-    </div></div>`;
-  if(S.tab==="month") return hd+picker+T+`<div class="card"><header><h2>Monthly record</h2>
-    <p>Submitted month by month. Optional for you, expected of your manager.</p></header>
-    <div class="body" style="display:flex;flex-direction:column;gap:11px">
-      ${QMONTHS[S.quarter].map(m=>monthBlock(S.me,m,S.quarter,"employee")).join("")}${QNOTE}</div></div>`;
-  return hd+picker+T+`
-  <div class="card"><header><h2>Your quarter</h2></header><div class="body">
-    <div class="field"><label>What did you work on, and what did you deliver?</label>
-      <textarea rows="3" data-act="did">${esc(self.did)}</textarea></div>
-    <div class="field"><label>What got in the way?</label>
-      <textarea rows="2" data-act="blk">${esc(self.blk)}</textarea></div></div></div>
-  <div class="card"><header><h2>Competency self-assessment</h2>
-    <p>1 Unsatisfactory · 2 Needs Improvement · 3 Meets Expectations · 4 Exceeds Expectations · 5 Outstanding.
-      An example is required at 4 or 5 — in FY26 only a 5 needed one, which is why 42 of 73 people landed on 4 or 5.
-      Delivery &amp; Accountability and Technical / Functional Skill carry double weight.</p></header>
-    <div class="body" style="display:flex;flex-direction:column;gap:11px">
-      ${COMPS.map((c,i)=>`<div class="comp"><h3>${esc(compLabel(i))}</h3><p class="desc">${esc(cdesc(i,S.me))}</p>
-        ${scaleRow(i,self.c[i],"selfrate",self.ex[i],"selfex")}</div>`).join("")}
-      <div class="row" style="justify-content:space-between">
-        <span class="selfchip">Self average ${avg(self.c)?avg(self.c).toFixed(2):"—"} · recorded, not counted in the score</span>
-        <button class="btn" data-act="noop" ${avg(self.c)==null?"disabled":""}>Submit self-assessment</button></div></div></div>`;
-}
-
-/* ---------------- ANNUAL ROLL-UP ---------------- */
-function annualCard(code,showName){
-  const a=annual(code), e=BYCODE[code], mx=5;
-  const low=lowFlag(code);
-  return `<div class="card"><header><h2>${showName?esc(e.name)+" — ":""}FY27 roll-up</h2>
-    <p>Every quarter, how it was produced, and what it averages to. This is the audit trail FY26 did not have.</p></header>
-    <div class="body">
-      <div class="stats" style="margin-bottom:16px">
-        ${a.vals.map(x=>`<div class="stat"><span class="v">${x.v!=null?x.v.toFixed(2):"—"}</span>
-          <span class="k">${esc(x.q)} · ${esc(QLABEL[x.q])}</span></div>`).join("")}
-        <div class="stat acc"><span class="v">${a.raw!=null?a.raw.toFixed(2):"—"}</span>
-          <span class="k">Annual average of ${a.got} quarter${a.got===1?"":"s"}</span></div>
-      </div>
-      <div class="trend" style="margin-bottom:14px">${a.vals.map(x=>
-        `<div class="${x.v==null?"empty":""}" style="height:${x.v==null?6:Math.max(6,x.v/mx*38)}px" title="${esc(x.q)} ${x.v!=null?x.v.toFixed(2):"no rating"}"></div>`).join("")}</div>
-      <div class="calc">${a.got?a.vals.filter(x=>x.v!=null).map(x=>`<span class="op">${esc(x.q)}</span> ${x.v.toFixed(2)}`).join("<br>")
-        +`<br><span class="op">÷ ${a.got} =</span> <span class="res">${a.raw.toFixed(2)}</span>`
-        +`<br><span class="op">rounded for the appraisal matrix =</span> <span class="res">${a.whole}</span>`:'<span class="op">No quarters rated yet.</span>'}</div>
-      ${a.whole!=null?`<div class="spec" style="margin-top:14px"><b>Feeds the appraisal matrix as a ${a.whole}.</b>
-        The existing rating × grade grid turns that into an increment percentage for ${esc(e.grade||"their grade")}.
-        Any manual override of this number must carry a written reason — the unrecorded override was the FY26 failure point.</div>`:""}
-      ${low?`<div class="alert" style="margin-top:14px"><h3>Flagged — ${esc(low)}</h3>
-        <p>A low rating has to lead somewhere. See the performance note on the quarterly review.</p></div>`:""}
-    </div></div>`;
-}
-
-/* ---------------- MANAGER ---------------- */
-function viewManager(){
-  const set={}; EMP.forEach(e=>{const rm=ratingRM(e.code); if(rm) set[rm]=true;});
-  const list=Object.keys(set).filter(c=>BYCODE[c]).sort((a,b)=>BYCODE[a].name.localeCompare(BYCODE[b].name));
-  if(!list.includes(S.mgr)) S.mgr=list[0];
-  const team=EMP.filter(e=>e.code!==S.mgr&&ratingRM(e.code)===S.mgr);
-  const m=BYCODE[S.mgr];
-  if(S.open) return viewReview(S.open);
-  const T=tabs([["month","Monthly notes"],["quarter","Quarterly reviews"],["year","Annual roll-up"]]);
-  const hd=`<div class="pagehead"><p class="eyebrow">Manager view · ${esc(S.quarter)} ${esc(QLABEL[S.quarter])}</p>
-    <h1>Your team</h1></div>
-   <div class="card"><div class="body"><div class="row">
-     <label class="eyebrow" for="mg">View as manager</label>
-     <select id="mg" data-act="setmgr" style="min-width:250px">${list.map(c=>opt(BYCODE[c].name+" · "+BYCODE[c].desig,c,S.mgr)).join("")}</select>
-     <span class="pill p-acc">${team.length} direct</span></div>
-     <div class="spec" style="margin-bottom:0"><b>${esc(m.name)}</b> · ${esc(m.desig)} · ${esc(m.dept)}</div></div></div>`;
-  if(!team.length) return hd+T+'<div class="card"><div class="empty">Nobody is rated by this person.</div></div>';
-  if(S.tab==="year") return hd+T+`<div class="card"><header><h2>Annual roll-up</h2>
-    <p>Quarter by quarter for everyone you rate.</p></header><div class="tw"><table><thead><tr>
-    <th>Person</th>${QS.map(q=>`<th>${esc(q.replace("FY27-",""))}</th>`).join("")}<th>Annual</th><th>Flag</th></tr></thead><tbody>
-    ${team.map(e=>{const a=annual(e.code),lf=lowFlag(e.code);return `<tr class="clickable" data-act="open" data-code="${e.code}">
-      <td><b>${esc(e.name)}</b></td>${a.vals.map(x=>`<td class="num">${x.v!=null?x.v.toFixed(2):"—"}</td>`).join("")}
-      <td class="num"><b>${a.raw!=null?a.raw.toFixed(2):"—"}</b></td>
-      <td>${lf?'<span class="pill p-part">'+esc(lf)+'</span>':""}</td></tr>`;}).join("")}
-    </tbody></table></div></div>`;
-  if(S.tab==="month") return hd+T+`<div class="card"><header><h2>Monthly notes — ${esc(MNAME[NOW_MONTH])}</h2>
-    <p>One or two lines per person, every month. The only thing expected of you monthly, and the thing that makes the quarterly rating defensible.</p></header>
-    <div class="body" style="display:flex;flex-direction:column;gap:10px">
-    ${team.map(e=>{const cur=getLog(e.code,NOW_MONTH,"manager");
-      return `<div class="comp"><div class="row" style="justify-content:space-between"><h3>${esc(e.name)}</h3>
-        ${cur?'<span class="pill p-done">Recorded</span>':'<span class="pill p-todo">Pending</span>'}</div>
-        <textarea rows="2" data-act="mlog" data-code="${e.code}" data-m="${NOW_MONTH}" data-who="manager"
-          placeholder="What they did · What you noticed · Anything to flag">${esc(cur?cur.text:"")}</textarea></div>`;}).join("")}
-    ${QNOTE}</div></div>`;
-  return hd+T+`<div class="card"><header><h2>Quarterly reviews</h2><p>Click a row to open.</p></header>
-   <div class="tw"><table><thead><tr><th>Person</th><th>Designation</th><th>Monthly lines</th><th>Self</th><th>Rating</th><th>Gap</th><th>Status</th></tr></thead><tbody>
-   ${team.map(e=>{const r=rec(e.code),sa=r.self?avg(r.self.c):null,f=finalFor(e.code);
-     const lines=QMONTHS[S.quarter].filter(m=>getLog(e.code,m,"manager")||getLog(e.code,m,"employee")).length;
-     return `<tr class="clickable" data-act="open" data-code="${e.code}">
-      <td><b>${esc(e.name)}</b><br><span class="mono" style="font-size:11px;color:var(--ink-3)">${esc(e.code)}</span></td>
-      <td>${esc(e.desig)}</td><td class="num">${lines}/3</td><td class="num">${sa?sa.toFixed(2):"—"}</td>
-      <td class="num">${f!=null?f.toFixed(2):"—"}</td>
-      <td class="num">${(()=>{const g=gapFor(e.code);return g==null?"—":
-        (Math.abs(g)>=1?'<span class="pill p-part">'+(g>0?"+":"")+g.toFixed(2)+'</span>':(g>0?"+":"")+g.toFixed(2));})()}</td>
-      <td><span class="pill ${PILL[statusOf(e.code)]}">${esc(statusOf(e.code))}</span></td></tr>`;}).join("")}
-   </tbody></table></div></div>`;
-}
-
-function viewReview(code){
-  const e=BYCODE[code], r=rec(code), self=r.self, f=finalFor(code), low=lowFlag(code);
-  const sub=r.rm||{c:Array(NC).fill(null),ex:Array(NC).fill("")};
-  const cms=commenters(code);
-  const alloc=e.alloc&&e.alloc.length?e.alloc.map(a=>esc(a.project)+" "+a.pct+"%").join(" · "):"On bench — no project allocation";
-  return `
-  <div class="pagehead"><p class="eyebrow">Manager view · review · ${esc(S.quarter)}</p><h1>${esc(e.name)}</h1>
-    <p>${esc(e.desig)} · ${esc(e.dept)} · ${esc(e.grade||"grade not set")}</p></div>
-  <div class="row"><button class="btn ghost" data-act="back">← Back to team</button></div>
-
-  ${(()=>{const el=eligible(code);return el.ok?"":`<div class="card"><div class="body">
-    <div class="alert"><h3>Not applicable this quarter</h3><p>${esc(el.why)}. No rating is produced, and this quarter is left out of the annual average rather than counted as a weak one.</p></div></div></div>`;})()}
-  <div class="card"><header><h2>Objective context</h2>
-    <p>Straight from Edge. Not a rating — the factual frame the conversation sits in.</p></header>
-    <div class="body"><div class="spec" style="margin-bottom:0"><b>Allocation this quarter.</b> ${esc(alloc)}
-      ${e.totalPct>100?` <span class="pill p-part">over-allocated at ${e.totalPct}%</span>`:""}
-      ${e.totalPct===0?' <span class="pill p-part">0% allocated</span>':""}</div></div></div>
-
-  <div class="card"><header><h2>Monthly record</h2>
-    <p>Written through the quarter, not recalled at the end. The evidence behind your rating.</p></header>
-    <div class="body" style="display:flex;flex-direction:column;gap:10px">
-      ${QMONTHS[S.quarter].map(m=>monthBlock(code,m,S.quarter,"manager")).join("")}${QNOTE}</div></div>
-
-  ${cms.length?`<div class="card"><header><h2>Other project leads</h2>
-    <p>They comment, you rate. Weighted multi-rater scoring comes in the next phase.</p></header>
-    <div class="body" style="display:flex;flex-direction:column;gap:10px">
-    ${cms.map(c=>`<div class="comp"><div class="row" style="justify-content:space-between">
-      <h3>${esc(c.name)}</h3><span class="selfchip">${esc(c.projects.join(", "))}</span></div>
-      <textarea rows="2" data-act="cmt" data-code="${code}" data-rc="${c.code}"
-        placeholder="What this lead saw on their project.">${esc(r.comments[c.code]||"")}</textarea></div>`).join("")}
-    </div></div>`:""}
-
-  <div class="card"><header><h2>What they said</h2></header><div class="body">
-    ${self?`<div class="spec"><b>Delivered.</b> ${esc(self.did)||"—"}</div><div class="spec"><b>Got in the way.</b> ${esc(self.blk)||"—"}</div>`
-      :'<div class="empty">Self-assessment not submitted yet.</div>'}</div></div>
-
-  <div class="card"><header><h2>Your rating</h2></header>
-    <div class="body" style="display:flex;flex-direction:column;gap:11px">
-      ${COMPS.map((c,i)=>`<div class="comp"><h3>${esc(compLabel(i))}</h3><p class="desc">${esc(cdesc(i,code))}</p>
-        <div class="sidebyside"><span class="selfchip">Self ${self&&self.c[i]?self.c[i]:"—"}</span></div>
-        ${scaleRow(i,sub.c[i],"mgrrate",sub.ex[i],"mgrex")}</div>`).join("")}
-      <div class="row" style="justify-content:space-between">
-        <span class="selfchip">Quarterly rating ${f!=null?f.toFixed(2):"—"}</span>
-        <button class="btn" data-act="noop" ${f==null?"disabled":""}>Submit rating</button></div></div></div>
-
-  ${low?`<div class="card"><header><h2>Performance note required</h2></header><div class="body">
-    <div class="alert"><h3>${esc(low)}</h3>
-      <p>A low rating has to lead somewhere, on a clock, in writing. Catching this in a quarter leaves time to fix it; catching it in April leaves none.</p>
-      <div class="step"><span class="n">1</span><span>Describe what specifically is below standard — observable behaviour or missed work, not a score.</span></div>
-      <div class="step"><span class="n">2</span><span>Agree two or three improvements with a date, 30 days out. Countersigned by the HR head so it cannot be used as a weapon.</span></div>
-      <div class="step"><span class="n">3</span><span>Review at 30 days — improved, partly, or not. Recorded either way.</span></div>
-      <div class="step"><span class="n">4</span><span>If not improved, a formal plan at 60 days with the possible outcomes stated upfront.</span></div>
+  <section>
+    <div class="sec-head">
+      <h2>Documents</h2>
+      <p>The prototype is the specification. Where a document and the code disagree, the code is right.</p>
     </div>
-    <div class="field" style="margin-top:14px"><label>What specifically is below standard?</label>
-      <textarea rows="2" data-act="pnote" data-code="${code}">${esc((r.pnote&&r.pnote.what)||"")}</textarea></div>
-    <div class="field"><label>Two or three improvements, with a 30-day date</label>
-      <textarea rows="3" data-act="pnote2" data-code="${code}">${esc((r.pnote&&r.pnote.steps)||"")}</textarea></div>
-    <div class="selfchip">Goes to the HR head for countersignature before it reaches the employee.</div>
-  </div></div>`:""}
+    <div class="docs">
+      <a class="doc" href="docs/LS_PMS_Scope.pdf">
+        <span class="k">PDF &middot; 5 pages</span><h3>Scope</h3>
+        <p>Why it exists, what V1 is and isn&rsquo;t, the six competencies, the eight rules, roles and visibility, the cycle calendar, the low-rating path, blockers and risks.</p></a>
+      <a class="doc" href="docs/LS_PMS_Walkthrough.pdf">
+        <span class="k">PDF &middot; 10 pages</span><h3>Walkthrough</h3>
+        <p>Nine screens with real captures &mdash; what each one does, and why it is built that way.</p></a>
+      <a class="doc" href="docs/build-spec.html">
+        <span class="k">Markdown</span><h3>Build spec</h3>
+        <p>The eight rules stated exactly, the data model, six screens and the permission matrix. Written for whoever builds it.</p></a>
+      <a class="doc" href="docs/competency-framework.html">
+        <span class="k">Markdown</span><h3>Competency framework</h3>
+        <p>The six competencies, the two whose definition changes by function, the rating anchors and the Q1 mapping.</p></a>
+      <a class="doc" href="docs/build-plan.html">
+        <span class="k">Markdown</span><h3>Build plan</h3>
+        <p>Phasing, owners and dates from launch through to the April 2027 appraisal.</p></a>
+    </div>
+  </section>
 
-  ${(()=>{const g=gapFor(code);if(g==null)return"";
-    const big=Math.abs(g)>=1;
-    return `<div class="card"><header><h2>Before you have the conversation</h2></header><div class="body">
-    <div class="${big?"alert":"note"}">${big?`<h3>Self-rating is ${g>0?"":"below "}${Math.abs(g).toFixed(2)} ${g>0?"above":""} yours</h3>
-      <p>A gap this size is where the 1:1 goes wrong. Decide now which two competencies you will evidence, and open with those rather than the number.</p>`
-      :`Self ${(rec(code).self&&avg(rec(code).self.c)).toFixed(2)} against your ${(avg(rec(code).rm.c)).toFixed(2)} — a gap of ${(g>0?"+":"")+g.toFixed(2)}. Close enough that the conversation should be straightforward.`}</div>
-    <div class="tw" style="margin-top:12px"><table><thead><tr><th>Competency</th><th>Self</th><th>You</th><th>Gap</th></tr></thead><tbody>
-    ${COMPS.map((c,i)=>{const sv=rec(code).self.c[i],mv=rec(code).rm.c[i],d=sv-mv;
-      return `<tr><td>${esc(compLabel(i))}</td><td class="num">${sv}</td><td class="num">${mv}</td>
-      <td class="num">${Math.abs(d)>=2?'<span class="pill p-part">'+(d>0?"+":"")+d+'</span>':(d>0?"+":"")+d}</td></tr>`;}).join("")}
-    </tbody></table></div></div></div>`;})()}
+  <section>
+    <div class="sec-head">
+      <h2>What it fixes</h2>
+      <p>Every appraisal so far has rested on recollection. FY26 showed the cost &mdash; 42 of 73 people rated 4 or 5, ratings normalised centrally without managers knowing, and nothing behind the increment conversation.</p>
+    </div>
+    <div class="rules">
+      <div class="rule-row"><b>Nothing accumulated</b><span>Performance was assessed once a year, from memory. Now it is recorded monthly and scored quarterly.</span></div>
+      <div class="rule-row"><b>No evidence requirement</b><span>A written example was needed at 5 but not at 4, so 4 became the free answer. Now it is mandatory at both.</span></div>
+      <div class="rule-row"><b>Nothing objective</b><span>Every input was opinion typed into a form. Project allocation now sits beside the rating as factual context.</span></div>
+    </div>
+  </section>
 
-  <div class="card"><header><h2>The conversation</h2>
-    <p>Not complete until the 1:1 has happened and the conclusion is recorded.</p></header><div class="body">
-    <div class="field"><label>What was concluded — agreed by both. The employee sees this.</label>
-      <textarea rows="3" data-act="o2o" data-code="${code}">${esc((r.o2o&&r.o2o.text)||"")}</textarea></div>
-    <div class="field"><label>Commitments for next quarter — two or three</label>
-      <span class="hint">Plain expectations, not KPIs. These become what next quarter is rated against, and they are the closest thing to objective ground until KPIs exist.</span>
-      <textarea rows="3" data-act="commit" data-code="${code}">${esc(r.commit)}</textarea></div>
-    <div class="field"><label>Note to leadership — not visible to the employee</label>
-      <textarea rows="2" data-act="lead" data-code="${code}">${esc(r.lead)}</textarea></div>
-    <button class="btn" data-act="closeo2o" data-code="${code}" ${f==null?"disabled":""}>Mark 1:1 held and release rating</button>
-    ${r.o2o&&r.o2o.held?`<div class="field" style="margin-top:16px"><label>Employee's own reflection — written by them, after the conversation</label>
-      <span class="hint">Read-only for you. The loop that FY26 never closed: people who feel unheard write to HR instead.</span>
-      <div class="spec" style="margin:0">${esc(r.reflect||"Not yet written.")}</div></div>`:""}
-  </div></div>`;
-}
+  <section>
+    <div class="sec-head"><h2>The rules, in short</h2></div>
+    <div class="rules">
+      <div class="rule-row"><b>Six competencies</b><span>Delivery &amp; Accountability and Technical / Functional Skill carry double weight. Divisor is 8, not 6.</span></div>
+      <div class="rule-row"><b>Per-function definitions</b><span>Technical / Functional Skill and Quality of Work mean something different in Engineering, Sales, HR, Finance and IT. One framework, not five.</span></div>
+      <div class="rule-row"><b>Self-rating excluded</b><span>Captured and shown beside the manager&rsquo;s rating to surface the gap, but it never enters the score.</span></div>
+      <div class="rule-row"><b>Months close with their quarter</b><span>A missed October line can still be added in December. The cycle administrator closes the quarter and the record is then fixed.</span></div>
+      <div class="rule-row"><b>42-day eligibility</b><span>Less than that with the rating manager and the quarter is <i>Not applicable</i> &mdash; excluded from the annual average rather than counted as weak.</span></div>
+      <div class="rule-row"><b>Equal-weighted annual</b><span>The simple average of the quarters actually rated, rounded for the existing rating &times; grade increment matrix.</span></div>
+    </div>
+  </section>
 
-/* ---------------- HR ---------------- */
-function viewHR(){
-  const T=tabs([["month","Cycle status"],["year","Annual roll-up"],["flags","Needs attention"]]);
-  const hd=`<div class="pagehead"><p class="eyebrow">HR view · cycle administrator</p>
-    <h1>${esc(S.quarter)} · ${esc(QLABEL[S.quarter])}</h1></div>
-    <div class="row"><button class="btn ghost" data-act="seed">${S.seeded?"Clear sample data":"Load sample data"}</button>
-      <span class="selfchip">Sample data is illustrative only — not real ratings.</span></div>`;
-  if(S.tab==="flags"){
-    const flagged=EMP.map(e=>({e,f:lowFlag(e.code),a:annual(e.code)})).filter(x=>x.f);
-    const stuck=EMP.filter(e=>statusOf(e.code)==="Not started");
-    return hd+T+`<div class="card"><header><h2>Low ratings</h2>
-      <p>Trigger: a quarter below ${LOW_Q.toFixed(1)}, or two consecutive quarters below ${LOW_RUN.toFixed(1)}. Each needs a performance note within 7 days.</p></header>
-      ${flagged.length?`<div class="tw"><table><thead><tr><th>Person</th><th>Manager</th><th>Trigger</th><th>Annual</th></tr></thead><tbody>
-      ${flagged.map(x=>`<tr><td>${esc(x.e.name)}</td><td>${esc((BYCODE[ratingRM(x.e.code)]||{}).name||"—")}</td>
-        <td><span class="pill p-part">${esc(x.f)}</span></td><td class="num">${x.a.raw!=null?x.a.raw.toFixed(2):"—"}</td></tr>`).join("")}
-      </tbody></table></div>`:'<div class="empty">No one flagged. Load sample data to see this populate.</div>'}</div>
-      <div class="card"><header><h2>Not started</h2><p>${stuck.length} people have not begun this quarter.</p></header>
-      <div class="tw"><table><thead><tr><th>Person</th><th>Department</th><th>Manager</th></tr></thead><tbody>
-      ${stuck.slice(0,20).map(e=>`<tr><td>${esc(e.name)}</td><td>${esc(e.dept)}</td>
-        <td>${esc((BYCODE[ratingRM(e.code)]||{}).name||"—")}</td></tr>`).join("")}
-      </tbody></table></div></div>`;
-  }
-  if(S.tab==="year"){
-    const sel=S.inspect&&BYCODE[S.inspect]?S.inspect:null;
-    return hd+T+`<div class="card"><header><h2>Annual roll-up</h2>
-      <p>Pick anyone to see how their four quarters become one number.</p></header>
-      <div class="body"><select data-act="inspect" style="min-width:270px">
-        <option value="">Select a person…</option>
-        ${EMP.map(x=>opt(x.name+" · "+x.dept,x.code,sel)).join("")}</select></div></div>
-      ${sel?annualCard(sel,true):'<div class="card"><div class="empty">Choose a person.</div></div>'}
-      <div class="card"><header><h2>Whole organisation</h2></header><div class="tw"><table><thead><tr>
-      <th>Person</th><th>Department</th>${QS.map(q=>`<th>${esc(q.replace("FY27-",""))}</th>`).join("")}<th>Annual</th></tr></thead><tbody>
-      ${EMP.slice(0,30).map(e=>{const a=annual(e.code);return `<tr><td>${esc(e.name)}</td><td>${esc(e.dept)}</td>
-        ${a.vals.map(x=>`<td class="num">${x.v!=null?x.v.toFixed(2):"—"}</td>`).join("")}
-        <td class="num"><b>${a.raw!=null?a.raw.toFixed(2):"—"}</b></td></tr>`;}).join("")}
-      </tbody></table></div><div class="body"><span class="selfchip">Showing 30 of ${EMP.length}.</span></div></div>`;
-  }
-  const rows=EMP.map(e=>({e,st:statusOf(e.code),f:finalFor(e.code)}));
-  const cnt={}; ["Not started","Self done","Manager done","Closed"].forEach(k=>cnt[k]=0);
-  rows.forEach(r=>cnt[r.st]++);
-  const rated=rows.filter(r=>r.f!=null), band=[0,0,0,0,0];
-  rated.forEach(r=>band[Math.min(4,Math.max(0,Math.round(r.f)-1))]++);
-  const mx=Math.max(1,...band);
-  const mlines=EMP.reduce((s,e)=>s+(getLog(e.code,NOW_MONTH,"manager")?1:0),0);
-  return hd+T+`
-  <div class="stats">
-    <div class="stat"><span class="v">${EMP.length}</span><span class="k">In scope</span></div>
-    <div class="stat"><span class="v">${cnt["Not started"]}</span><span class="k">Not started</span></div>
-    <div class="stat"><span class="v">${cnt["Self done"]+cnt["Manager done"]}</span><span class="k">In progress</span></div>
-    <div class="stat acc"><span class="v">${cnt["Closed"]}</span><span class="k">Closed</span></div>
-    <div class="stat"><span class="v">${mlines}</span><span class="k">${esc(MNAME[NOW_MONTH])} notes in</span></div>
+  <section>
+    <div class="sec-head">
+      <h2>Before a build starts</h2>
+      <p>Three blockers, all outside engineering&rsquo;s control until resolved.</p>
+    </div>
+    <ol class="blockers">
+      <li><b>Employee ID collision.</b> One code identifies a different person in each of the two systems, and thirteen people carry different IDs across them. The HR system&rsquo;s ID must win everywhere before any join is written.</li>
+      <li><b>Project &rarr; rating manager map.</b> Allocations exist but no system records who leads a project. All 18 need a named lead; two have none obvious.</li>
+      <li><b>Stale record.</b> One employee is still marked Active who should not be.</li>
+    </ol>
+  </section>
+
+  <div class="note">
+    <b>Data notice.</b> The prototype embeds names, designations, grades, reporting lines and project allocations for all 109 active employees. It carries no salary, CTC, identity-document or contact data. This repository is private and should stay that way.
   </div>
-  <div class="grid2">
-    <div class="card"><header><h2>Rating distribution</h2><p>${rated.length} of ${EMP.length} rated.</p></header>
-      <div class="body"><div class="dist">${band.map((n,i)=>`<div class="dbar"><span>${i+1} ${esc(SCALE[i])}</span>
-        <div class="track"><div class="fill" style="width:${n/mx*100}%"></div></div><span class="n">${n}</span></div>`).join("")}</div>
-        <div class="note" style="margin-top:14px">FY26 put <strong>42 of 73 people at 4 or 5</strong>. If this clusters the same way, the evidence requirement is not biting.</div></div></div>
-    <div class="card"><header><h2>By department</h2></header><div class="tw"><table><thead><tr>
-      <th>Department</th><th>People</th><th>Closed</th><th>Monthly notes</th></tr></thead><tbody>
-      ${[...new Set(EMP.map(e=>e.dept))].map(d=>{const g=rows.filter(r=>r.e.dept===d);
-        const ml=g.filter(r=>getLog(r.e.code,NOW_MONTH,"manager")).length;
-        return `<tr><td>${esc(d)}</td><td class="num">${g.length}</td>
-          <td class="num">${g.filter(r=>r.st==="Closed").length}</td><td class="num">${ml}</td></tr>`;}).join("")}
-      </tbody></table></div></div>
-  </div>
-  <div class="card"><header><h2>By manager — the outlier check</h2>
-    <p>Not full calibration, just visibility. 25 managers rating on 25 private scales is how FY26 ended up normalising centrally and catching managers unaware. Flagged above 4.20 or below 2.80.</p></header>
-    <div class="tw"><table><thead><tr><th>Manager</th><th>Department</th><th>Team</th><th>Rated</th><th>Their average</th><th></th></tr></thead><tbody>
-    ${(()=>{const set={};EMP.forEach(e=>{const rm=ratingRM(e.code);if(rm)set[rm]=true;});
-      const rows=Object.keys(set).filter(c=>BYCODE[c]).map(c=>({c,m:BYCODE[c],s:mgrStats(c)}))
-        .filter(x=>x.s.rated>0).sort((a,b)=>(b.s.avg||0)-(a.s.avg||0));
-      return rows.length?rows.map(x=>{const out=x.s.avg>4.2||x.s.avg<2.8;
-        return `<tr><td>${esc(x.m.name)}</td><td>${esc(x.m.dept)}</td><td class="num">${x.s.n}</td>
-        <td class="num">${x.s.rated}</td><td class="num"><b>${x.s.avg.toFixed(2)}</b></td>
-        <td>${out?'<span class="pill p-part">outlier</span>':""}</td></tr>`;}).join("")
-        :'<tr><td colspan="6" class="empty">No ratings yet. Load sample data to see this populate.</td></tr>';})()}
-    </tbody></table></div></div>
 
-  <div class="card"><header><h2>Quarter control</h2>
-    <p>The cycle administrator — the HR head — opens and closes each quarter, chases non-submitters, and handles mid-quarter manager changes, leavers and new joiners.</p></header>
-    <div class="body">
-    <div class="spec"><b>Mid-quarter manager change.</b> The reporting manager at quarter close rates. The outgoing manager must leave a handover note in the monthly record before the change takes effect.</div>
-    <div class="spec"><b>New joiners and leavers.</b> Fewer than ${MIN_DAYS} days with the rating manager in the quarter means Not applicable — no rating, and the quarter is excluded from the annual average rather than dragging it down.</div>
-    <div class="spec"><b>Audit trail.</b> Every submission, edit and release is logged with who and when. Required for ISO 27001 evidence, and the thing that makes an override arguable rather than silent.</div>
-    <div class="tw" style="margin-top:12px"><table><thead><tr><th>Quarter</th><th>Months</th><th>State</th></tr></thead><tbody>
-    ${QS.map(q=>`<tr><td>${esc(q)} · ${esc(QLABEL[q])}</td>
-      <td style="font-size:12px;color:var(--ink-3)">${QMONTHS[q].map(m=>esc(MNAME[m].split(" ")[0])).join(" · ")}</td>
-      <td>${QCLOSED[q]?'<span class="pill p-done">Closed</span>':'<span class="pill p-acc">Open — months still editable</span>'}</td></tr>`).join("")}
-    </tbody></table></div></div></div>`;
-}
+  <footer>
+    LS PMS &middot; prototype and scope v1 &middot; October 2026<br>
+    Not in V1, deliberately: KPIs per role &middot; engagement-weighted multi-rater scoring &middot; 360 or peer feedback &middot; skip-level views &middot; salary bands &middot; promotion criteria.
+  </footer>
 
-/* ---------------- sample ---------------- */
-function seed(){
-  if(S.seeded){S.reviews={};S.logs={};S.seeded=false;return;}
-  EMP.forEach(e=>{
-    const h=[...e.code].reduce((s,c)=>s+c.charCodeAt(0),0);
-    QS.forEach((q,qi)=>{
-      if(qi>2) return;
-      const r=rec(e.code,q);
-      if(h%10<2) return;
-      r.self={c:COMPS.map((_,i)=>3+((h+i*7)%3===0?1:0)),ex:COMPS.map(()=>""),did:"",blk:""};
-      if(h%10<4) return;
-      r.rm={c:COMPS.map((_,i)=>Math.max(1,Math.min(5,2+((h+i*5+qi*3)%4)))),ex:COMPS.map(()=>"")};
-      if(h%10>=8) r.o2o={held:true,text:"Sample conversation record."};
-    });
-    if(h%3===0) setLog(e.code,NOW_MONTH,"manager","Sample monthly note.");
-  });
-  S.seeded=true;
-}
-
-/* ---------------- render ---------------- */
-const TABS_OK={employee:["month","quarter","year"],manager:["month","quarter","year"],hr:["month","year","flags"]};
-function render(){
-  if(!TABS_OK[S.role].includes(S.tab)) S.tab=TABS_OK[S.role][0];
-  document.getElementById("app").innerHTML=S.role==="employee"?viewEmployee():S.role==="manager"?viewManager():viewHR();
-  document.querySelectorAll("#roles button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.r===S.role));
-}
-document.getElementById("roles").addEventListener("click",ev=>{const b=ev.target.closest("button[data-r]");if(!b)return;
-  S.role=b.dataset.r;S.open=null;S.tab=TABS_OK[S.role][0];render();});
-document.getElementById("q").addEventListener("change",ev=>{S.quarter=ev.target.value;S.open=null;render();});
-document.getElementById("app").addEventListener("click",ev=>{
-  const t=ev.target.closest("[data-act]");if(!t)return;
-  const a=t.dataset.act,i=+t.dataset.i,v=+t.dataset.v,code=t.dataset.code;
-  if(a==="tab"){S.tab=t.dataset.t;S.open=null;render();}
-  else if(a==="selfrate"){const r=rec(S.me);r.self=r.self||{c:Array(NC).fill(null),ex:Array(NC).fill(""),did:"",blk:""};
-    r.self.c[i]=v;render();}
-  else if(a==="mgrrate"){const r=rec(S.open);r.rm=r.rm||{c:Array(NC).fill(null),ex:Array(NC).fill("")};
-    r.rm.c[i]=v;render();}
-  else if(a==="open"){S.open=code;S.tab="quarter";render();}
-  else if(a==="back"){S.open=null;render();}
-  else if(a==="closeo2o"){const r=rec(code);r.o2o={held:true,text:(r.o2o&&r.o2o.text)||""};S.open=null;render();}
-  else if(a==="seed"){seed();render();}
-});
-document.getElementById("app").addEventListener("change",ev=>{
-  const t=ev.target.closest("[data-act]");if(!t)return;
-  if(t.dataset.act==="setme"){S.me=t.value;render();}
-  else if(t.dataset.act==="setmgr"){S.mgr=t.value;S.open=null;render();}
-  else if(t.dataset.act==="inspect"){S.inspect=t.value||null;render();}
-});
-document.getElementById("app").addEventListener("input",ev=>{
-  const t=ev.target.closest("[data-act]");if(!t)return;
-  const a=t.dataset.act,i=+t.dataset.i,code=t.dataset.code;
-  if(a==="mlog"){setLog(t.dataset.code,t.dataset.m,t.dataset.who,t.value);return;}
-  const r=code?rec(code):rec(S.me);
-  if(a==="did"||a==="blk"){r.self=r.self||{c:Array(NC).fill(null),ex:Array(NC).fill(""),did:"",blk:""};r.self[a]=t.value;}
-  else if(a==="selfex"){r.self.ex[i]=t.value;}
-  else if(a==="mgrex"){rec(S.open).rm.ex[i]=t.value;}
-  else if(a==="cmt"){r.comments[t.dataset.rc]=t.value;}
-  else if(a==="o2o"){r.o2o=r.o2o||{held:false,text:""};r.o2o.text=t.value;}
-  else if(a==="commit"){r.commit=t.value;}
-  else if(a==="lead"){r.lead=t.value;}
-  else if(a==="pnote"){r.pnote=r.pnote||{};r.pnote.what=t.value;}
-  else if(a==="pnote2"){r.pnote=r.pnote||{};r.pnote.steps=t.value;}
-  else if(a==="reflect"){r.reflect=t.value;}
-});
-render();
-</script>
-
+</div>
 </body>
 </html>

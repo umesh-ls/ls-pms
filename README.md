@@ -4,9 +4,10 @@
 
 This repository holds the working prototype, built to be handed to engineering and implemented inside **Edge**.
 
-**Live prototype:** `https://<org>.github.io/ls-pms/` *(replace `<org>` once Pages is enabled)*
+**Site:** `https://<org>.github.io/ls-pms/` *(replace `<org>` once Pages is enabled)*
+**Prototype:** `https://<org>.github.io/ls-pms/prototype/`
 
-A single self-contained HTML file. No build step, no dependencies, no backend. Open `index.html` in any browser and it runs.
+The site root is a landing page linking to the prototype and every document. The prototype itself is a single self-contained HTML file — no build step, no dependencies, no backend. Open `prototype/index.html` in any browser and it runs.
 
 ---
 
@@ -53,16 +54,19 @@ The prototype is the specification. Where `docs/build-spec.md` and the code disa
 ## Repository layout
 
 ```
-index.html                        the prototype
+index.html                        landing page — links to everything below
+prototype/index.html              the prototype
 assets/                           screenshots used in the documents
 docs/
-  LS_PMS_Scope.pdf                complete scope
-  LS_PMS_Walkthrough.pdf          screen-by-screen walkthrough
-  build-spec.md                   rules, data model, screens, permissions
-  competency-framework.md         the six competencies and per-function definitions
-  build-plan.md                   phasing and owners
+  LS_PMS_Scope.pdf                complete scope, 5 pages
+  LS_PMS_Walkthrough.pdf          screen-by-screen walkthrough, 10 pages
+  build-spec.md / .html           rules, data model, screens, permissions
+  competency-framework.md / .html the six competencies and per-function definitions
+  build-plan.md / .html           phasing and owners
 .github/workflows/pages.yml       GitHub Pages deployment
 ```
+
+Each `.md` has a matching `.html` so every link works in a browser; the `.md` is what you read and edit in the repo.
 
 ---
 

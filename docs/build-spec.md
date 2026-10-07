@@ -1,9 +1,9 @@
 # LS PMS — Build Spec V1
 
 **6 October 2026 · For: Head of Engineering & Delivery · Sponsor: Director – Operations**
-Working prototype: https://claude.ai/artifact/EzV9GX3sQR67gsgvRfPQ9K — it runs the rules below on real LS data. Where this document and the prototype differ, the prototype is right.
+Working prototype: `prototype/` in this repository — it runs the rules below on real LS data. Where this document and the prototype differ, the prototype is right.
 
-**Companion:** `2026-10-06_LS_competency_framework_v1.md` — the six competencies, the two whose definition varies by function, and the Q1 mapping. Read it before building the rating screens.
+**Companion:** `docs/competency-framework.md` — the six competencies, the two whose definition varies by function, and the Q1 mapping. Read it before building the rating screens.
 
 **Build target:** LS PMS (Performance Management System) — a quarterly review module, preferably inside Edge, which already holds all 112 people with roles (98 Team member, 4 Manager, 10 Admin) and project allocations. Zoho stays the HR source of truth for employee identity.
 
